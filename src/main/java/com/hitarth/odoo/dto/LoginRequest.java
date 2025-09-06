@@ -1,7 +1,6 @@
 package com.hitarth.odoo.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Email;
 
 public class LoginRequest {
     

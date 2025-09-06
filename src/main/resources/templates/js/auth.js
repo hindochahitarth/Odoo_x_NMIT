@@ -334,12 +334,19 @@ class AuthManager {
                 password: password
             });
 
-            this.showMessage('Login successful! Redirecting...', 'success');
-            
-            // Redirect to dashboard after successful login
-            setTimeout(() => {
-                window.location.href = '/dashboard';
-            }, 1500);
+            if (response.success && response.user) {
+                // Store user data in localStorage
+                localStorage.setItem('userData', JSON.stringify(response.user));
+                
+                this.showMessage('Login successful! Redirecting...', 'success');
+                
+                // Redirect to dashboard after successful login
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 1500);
+            } else {
+                this.showMessage(response.message || 'Login failed. Please check your credentials.', 'error');
+            }
 
         } catch (error) {
             this.showMessage(error.message || 'Login failed. Please check your credentials.', 'error');
@@ -533,6 +540,16 @@ const ValidationUtils = {
         return username && username.trim().length >= minLength;
     }
 };
+
+// Convert file to base64 string
+async function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
 
 // Export for potential use in other scripts
 if (typeof module !== 'undefined' && module.exports) {

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Marketplace</title>
+    <link rel="stylesheet" href="../css/shared.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/marketplace.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="#4CAF50"/>
+                        <path d="M12 6L12.5 8.5L15 9L12.5 9.5L12 12L11.5 9.5L9 9L11.5 8.5L12 6Z" fill="#8BC34A"/>
+                    </svg>
+                </div>
+                <span class="logo-text">EcoFinds</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="#" class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+            <a href="/dashboard.html" class="user-menu-icon" id="userMenuIcon">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Search and Filter Bar -->
+        <div class="search-filter-bar">
+            <div class="search-input">
+                <input type="text" id="searchInput" class="form-input" placeholder="Search products...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="Electronics">Electronics</button>
+                <button class="filter-btn" data-category="Clothing">Clothing</button>
+                <button class="filter-btn" data-category="Furniture">Furniture</button>
+                <button class="filter-btn" data-category="Books">Books</button>
+                <button class="filter-btn" data-category="Sports">Sports</button>
+                <button class="filter-btn" data-category="Home & Garden">Home & Garden</button>
+                <button class="filter-btn" data-category="Toys">Toys</button>
+                <button class="filter-btn" data-category="Automotive">Automotive</button>
+                <button class="filter-btn" data-category="Beauty">Beauty</button>
+                <button class="filter-btn" data-category="Other">Other</button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-container">
+            <div class="grid grid-4" id="productsGrid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="emptyState">
+            <div class="text-center">
+                <i class="fas fa-search" style="font-size: 4rem; color: var(--dark-gray); margin-bottom: 1rem;"></i>
+                <h3>No products found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state text-center" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Loading products...</p>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="btn btn-secondary floating-btn" id="viewCartBtn">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="floatingCartCount">0</span>
+        </button>
+        <button class="btn btn-primary btn-large floating-add-btn" id="addProductBtn">
+            <i class="fas fa-plus"></i>
+            Add Product
+        </button>
+    </div>
+
+    <!-- Message Container -->
+    <div class="message-container" id="messageContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/marketplace.js"></script>
+</body>
+</html>

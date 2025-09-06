@@ -27,13 +27,18 @@ public class AuthService {
      */
     public AuthResponse register(RegisterRequest request) {
         try {
+            System.out.println("Registration attempt for: " + request.getEmail());
+            System.out.println("Display name: " + request.getDisplayName());
+            
             // Check if email already exists
             if (userRepository.existsByEmail(request.getEmail())) {
+                System.out.println("Email already exists: " + request.getEmail());
                 return AuthResponse.error("Email already exists. Please use a different email.");
             }
             
             // Check if display name already exists
             if (userRepository.existsByDisplayName(request.getDisplayName())) {
+                System.out.println("Display name already exists: " + request.getDisplayName());
                 return AuthResponse.error("Display name already exists. Please choose a different name.");
             }
             
@@ -44,8 +49,10 @@ public class AuthService {
             user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
             user.setProfileImageUrl(request.getProfileImageUrl());
             
+            System.out.println("Saving user to database...");
             // Save user to database
             User savedUser = userRepository.save(user);
+            System.out.println("User saved with ID: " + savedUser.getId());
             
             // Create user info for response
             AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
@@ -58,7 +65,9 @@ public class AuthService {
             return AuthResponse.success("Account created successfully!", null, userInfo);
             
         } catch (Exception e) {
-            return AuthResponse.error("Registration failed. Please try again.");
+            System.err.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
+            return AuthResponse.error("Registration failed: " + e.getMessage());
         }
     }
     

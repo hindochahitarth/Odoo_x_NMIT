@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,8 +24,18 @@ public class AuthController {
      * POST /api/auth/register
      */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
         try {
+            // Check for validation errors
+            if (bindingResult.hasErrors()) {
+                StringBuilder errorMessage = new StringBuilder("Validation failed: ");
+                bindingResult.getFieldErrors().forEach(error -> {
+                    errorMessage.append(error.getField()).append(" - ").append(error.getDefaultMessage()).append("; ");
+                });
+                AuthResponse errorResponse = AuthResponse.error(errorMessage.toString());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+            
             AuthResponse response = authService.register(request);
             
             if (response.isSuccess()) {
@@ -34,7 +45,9 @@ public class AuthController {
             }
             
         } catch (Exception e) {
-            AuthResponse errorResponse = AuthResponse.error("Registration failed due to server error.");
+            System.err.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
+            AuthResponse errorResponse = AuthResponse.error("Registration failed due to server error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
@@ -44,8 +57,18 @@ public class AuthController {
      * POST /api/auth/login
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request, BindingResult bindingResult) {
         try {
+            // Check for validation errors
+            if (bindingResult.hasErrors()) {
+                StringBuilder errorMessage = new StringBuilder("Validation failed: ");
+                bindingResult.getFieldErrors().forEach(error -> {
+                    errorMessage.append(error.getField()).append(" - ").append(error.getDefaultMessage()).append("; ");
+                });
+                AuthResponse errorResponse = AuthResponse.error(errorMessage.toString());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+            
             AuthResponse response = authService.login(request);
             
             if (response.isSuccess()) {
@@ -55,7 +78,9 @@ public class AuthController {
             }
             
         } catch (Exception e) {
-            AuthResponse errorResponse = AuthResponse.error("Login failed due to server error.");
+            System.err.println("Login error: " + e.getMessage());
+            e.printStackTrace();
+            AuthResponse errorResponse = AuthResponse.error("Login failed due to server error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }

@@ -20,7 +20,7 @@ public class User {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
     
-    @Column(name = "profile_image_url", length = 500)
+    @Column(name = "profile_image_url", columnDefinition = "TEXT", nullable = true)
     private String profileImageUrl;
     
     @Column(name = "created_at")

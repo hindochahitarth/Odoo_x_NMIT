@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Second-Hand Marketplace</title>
+    <link rel="stylesheet" href="../css/shared.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-description {
+            font-size: 1.125rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-btn {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hero-btn-primary {
+            background: var(--white);
+            color: var(--primary-green);
+        }
+        
+        .hero-btn-primary:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .hero-btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .hero-btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+        
+        .features-section {
+            padding: 4rem 2rem;
+            background: var(--white);
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 3rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            background: var(--light-gray);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">EcoFinds</h1>
+            <p class="hero-subtitle">Sustainable Second-Hand Marketplace</p>
+            <p class="hero-description">
+                Discover amazing pre-loved items while contributing to a more sustainable future. 
+                Buy and sell quality second-hand products in our eco-friendly marketplace.
+            </p>
+            <div class="hero-buttons">
+                <a href="/marketplace.html" class="hero-btn hero-btn-primary">
+                    <i class="fas fa-store"></i>
+                    Browse Marketplace
+                </a>
+                <a href="/auth.html" class="hero-btn hero-btn-secondary">
+                    <i class="fas fa-user"></i>
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-container">
+            <h2 class="features-title">Why Choose EcoFinds?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="feature-title">Eco-Friendly</h3>
+                    <p class="feature-description">
+                        Reduce waste and environmental impact by giving items a second life. 
+                        Every purchase helps create a more sustainable future.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3 class="feature-title">Great Value</h3>
+                    <p class="feature-description">
+                        Find high-quality items at affordable prices. 
+                        Save money while supporting the circular economy.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Trusted Platform</h3>
+                    <p class="feature-description">
+                        Buy and sell with confidence on our secure platform. 
+                        All users are verified and transactions are protected.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Easy to Use</h3>
+                    <p class="feature-description">
+                        Simple and intuitive interface designed for seamless buying and selling. 
+                        List items in minutes and find what you need quickly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // Auto-redirect to marketplace after 5 seconds if no interaction
+        let redirectTimer;
+        
+        function startRedirectTimer() {
+            redirectTimer = setTimeout(() => {
+                window.location.href = '/marketplace.html';
+            }, 5000);
+        }
+        
+        function clearRedirectTimer() {
+            if (redirectTimer) {
+                clearTimeout(redirectTimer);
+            }
+        }
+        
+        // Start timer on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            startRedirectTimer();
+        });
+        
+        // Clear timer on any user interaction
+        document.addEventListener('click', clearRedirectTimer);
+        document.addEventListener('keydown', clearRedirectTimer);
+        document.addEventListener('scroll', clearRedirectTimer);
+    </script>
+</body>
+</html>

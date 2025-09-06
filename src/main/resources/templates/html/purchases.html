@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Purchases - EcoFinds</title>
+    <link rel="stylesheet" href="../css/shared.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .purchases-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .purchases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .purchases-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light-gray);
+            padding: 0.25rem;
+            border-radius: var(--border-radius-small);
+        }
+        
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+        
+        .filter-tab.active {
+            background: var(--white);
+            color: var(--text-dark);
+            box-shadow: var(--shadow);
+        }
+        
+        .purchases-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .purchase-group {
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .purchase-group:last-child {
+            border-bottom: none;
+        }
+        
+        .purchase-header {
+            background: var(--light-gray);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .purchase-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .purchase-date {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .purchase-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+        
+        .purchase-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-small);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-completed {
+            background: var(--success-green);
+            color: var(--white);
+        }
+        
+        .status-pending {
+            background: var(--warning-orange);
+            color: var(--white);
+        }
+        
+        .status-cancelled {
+            background: var(--error-red);
+            color: var(--white);
+        }
+        
+        .purchase-items {
+            padding: 1.5rem;
+        }
+        
+        .purchase-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+            align-items: center;
+        }
+        
+        .purchase-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--border-radius-small);
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-size: 1.5rem;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        .item-category {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-seller {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .item-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-align: right;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--medium-gray);
+            background: var(--white);
+            color: var(--text-dark);
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-text {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .purchase-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .purchase-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .item-price {
+                text-align: center;
+            }
+            
+            .item-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="/marketplace.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="#4CAF50"/>
+                        <path d="M12 6L12.5 8.5L15 9L12.5 9.5L12 12L11.5 9.5L9 9L11.5 8.5L12 6Z" fill="#8BC34A"/>
+                    </svg>
+                </div>
+                <span class="logo-text">EcoFinds</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+            <a href="/dashboard.html" class="user-menu-icon">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="purchases-container">
+        <!-- Purchases Header -->
+        <div class="purchases-header">
+            <h1 class="purchases-title">My Purchases</h1>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-status="all">All</button>
+                <button class="filter-tab" data-status="completed">Completed</button>
+                <button class="filter-tab" data-status="pending">Pending</button>
+                <button class="filter-tab" data-status="cancelled">Cancelled</button>
+            </div>
+        </div>
+
+        <!-- Purchases Content -->
+        <div class="purchases-content" id="purchasesContent">
+            <!-- Purchase history will be loaded here dynamically -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="emptyState">
+            <i class="fas fa-shopping-bag empty-icon"></i>
+            <h3 class="empty-title">No purchases found</h3>
+            <p class="empty-text">You haven't made any purchases yet.</p>
+            <a href="/marketplace.html" class="btn btn-primary">
+                <i class="fas fa-store"></i>
+                Start Shopping
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Loading your purchases...</p>
+        </div>
+    </div>
+
+    <!-- Message Container -->
+    <div class="message-container" id="messageContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/purchases.js"></script>
+</body>
+</html>
