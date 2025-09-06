@@ -29,3 +29,4 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Query("SELECT ci FROM CartItem ci JOIN FETCH ci.product WHERE ci.user = :user ORDER BY ci.addedAt DESC")
     List<CartItem> findByUserWithProduct(@Param("user") User user);
 }
+

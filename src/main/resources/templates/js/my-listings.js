@@ -51,7 +51,7 @@ class MyListingsManager {
         this.showLoading(true);
         
         try {
-            const response = await sharedUtils.makeApiCall(`/products/user/${sharedUtils.userData.id}`);
+            const response = await sharedUtils.makeApiCall(`/api/products/user/${sharedUtils.userData.id}`);
             this.products = response;
             this.filteredProducts = [...this.products];
             this.renderProducts();
@@ -229,7 +229,7 @@ class MyListingsManager {
         sharedUtils.showLoading(true);
 
         try {
-            const response = await sharedUtils.makeApiCall(`/products/${productId}?sellerId=${sharedUtils.userData.id}`, null, 'DELETE');
+            const response = await sharedUtils.makeApiCall(`/api/products/${productId}?sellerId=${sharedUtils.userData.id}`, null, 'DELETE');
             
             if (response.success) {
                 sharedUtils.showMessage('Product deleted successfully', 'success');
@@ -273,3 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { MyListingsManager };
 }
+
+
+
+

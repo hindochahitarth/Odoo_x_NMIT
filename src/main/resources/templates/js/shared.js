@@ -21,7 +21,10 @@ class SharedUtils {
     getStoredUserData() {
         try {
             const stored = localStorage.getItem('userData');
-            return stored ? JSON.parse(stored) : null;
+            console.log('Raw localStorage userData:', stored);
+            const parsed = stored ? JSON.parse(stored) : null;
+            console.log('Parsed userData:', parsed);
+            return parsed;
         } catch (e) {
             console.error('Error parsing stored user data:', e);
             return null;
@@ -31,12 +34,18 @@ class SharedUtils {
     // Refresh user data from localStorage
     refreshUserData() {
         this.userData = this.getStoredUserData();
+        console.log('Refreshed userData:', this.userData);
         return this.userData;
     }
 
     // Check if user is authenticated
     isAuthenticated() {
         return this.userData && this.userData.id;
+    }
+
+    // Get user ID
+    getUserId() {
+        return this.userData ? this.userData.id : null;
     }
 
     // Logout user
@@ -71,18 +80,38 @@ class SharedUtils {
 
             if (data && method !== 'GET') {
                 options.body = JSON.stringify(data);
+                console.log('Request body:', options.body);
             }
 
-            const response = await fetch(this.apiBaseUrl + url, options);
+            // Check if URL already starts with /api, if not, prepend it
+            const fullUrl = url.startsWith('/api') ? url : this.apiBaseUrl + url;
+            console.log('Making API call to:', fullUrl);
+            console.log('Request options:', options);
+            
+            const response = await fetch(fullUrl, options);
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
             const result = await response.json();
+            console.log('Response body:', result);
             
             if (!response.ok) {
+                console.error('API call failed:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    result: result
+                });
                 throw new Error(result.message || `HTTP error! status: ${response.status}`);
             }
             
             return result;
         } catch (error) {
             console.error('API Error:', error);
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
             throw error;
         }
     }

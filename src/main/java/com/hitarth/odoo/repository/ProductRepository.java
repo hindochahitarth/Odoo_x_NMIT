@@ -53,3 +53,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // Find products by category with pagination
     Page<Product> findByCategoryAndIsActiveTrueAndIsSoldFalseOrderByCreatedAtDesc(String category, Pageable pageable);
 }
+

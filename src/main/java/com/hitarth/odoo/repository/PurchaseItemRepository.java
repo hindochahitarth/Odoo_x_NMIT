@@ -12,3 +12,4 @@ public interface PurchaseItemRepository extends JpaRepository<PurchaseItem, Long
     // Find all items for a purchase
     List<PurchaseItem> findByPurchaseId(Long purchaseId);
 }
+

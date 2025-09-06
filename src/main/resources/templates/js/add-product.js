@@ -88,7 +88,7 @@ class AddProductManager {
     // Load categories from API
     async loadCategories() {
         try {
-            const response = await sharedUtils.makeApiCall('/products/categories');
+            const response = await sharedUtils.makeApiCall('/api/products/categories');
             this.categories = response;
             this.populateCategories();
         } catch (error) {
@@ -100,7 +100,7 @@ class AddProductManager {
     // Load condition types from API
     async loadConditionTypes() {
         try {
-            const response = await sharedUtils.makeApiCall('/products/conditions');
+            const response = await sharedUtils.makeApiCall('/api/products/conditions');
             this.conditionTypes = response;
             this.populateConditionTypes();
         } catch (error) {
@@ -227,7 +227,7 @@ class AddProductManager {
             }
 
             // Submit to API
-            const response = await sharedUtils.makeApiCall(`/products?sellerId=${sharedUtils.userData.id}`, formData, 'POST');
+            const response = await sharedUtils.makeApiCall(`/api/products?sellerId=${sharedUtils.userData.id}`, formData, 'POST');
 
             if (response.success) {
                 sharedUtils.showMessage('Product added successfully!', 'success');

@@ -7,7 +7,6 @@ class MarketplaceManager {
         this.filteredProducts = [];
         this.currentCategory = 'all';
         this.searchKeyword = '';
-        this.cart = this.loadCart();
         this.init();
     }
 
@@ -40,11 +39,6 @@ class MarketplaceManager {
             this.navigateToAddProduct();
         });
 
-        // Cart icon
-        document.getElementById('cartIcon').addEventListener('click', () => {
-            window.location.href = '/cart.html';
-        });
-
         // Floating cart button
         document.getElementById('viewCartBtn').addEventListener('click', () => {
             window.location.href = '/cart.html';
@@ -61,7 +55,7 @@ class MarketplaceManager {
         this.showLoading(true);
         
         try {
-            const response = await sharedUtils.makeApiCall('/products');
+            const response = await sharedUtils.makeApiCall('/api/products');
             this.products = response;
             this.filteredProducts = [...this.products];
             this.renderProducts();
@@ -118,6 +112,7 @@ class MarketplaceManager {
 
         // Render products
         productsGrid.innerHTML = this.filteredProducts.map(product => this.createProductCard(product)).join('');
+        this.addProductCardHandlers();
     }
 
     // Create product card HTML
@@ -220,17 +215,11 @@ class MarketplaceManager {
         }
     }
 
-    // Cart management
-    loadCart() {
-        return sharedUtils.getItem('cart', []);
-    }
-
-    saveCart() {
-        sharedUtils.setItem('cart', this.cart);
-    }
+    // Cart management - now handled by database
 
 
     async updateCartDisplay() {
+        sharedUtils.refreshUserData();
         if (sharedUtils.isAuthenticated()) {
             try {
                 const response = await sharedUtils.makeApiCall(`/api/cart/count/${sharedUtils.userData.id}`);
@@ -241,6 +230,8 @@ class MarketplaceManager {
                 }
             } catch (error) {
                 console.error('Error updating cart count:', error);
+                document.getElementById('cartCount').textContent = '0';
+                document.getElementById('floatingCartCount').textContent = '0';
             }
         } else {
             document.getElementById('cartCount').textContent = '0';

@@ -334,6 +334,8 @@ class AuthManager {
                 password: password
             });
 
+            console.log('Login response:', response);
+
             if (response.success && response.user) {
                 // Store user data in localStorage
                 localStorage.setItem('userData', JSON.stringify(response.user));
@@ -342,13 +344,15 @@ class AuthManager {
                 
                 // Redirect to dashboard after successful login
                 setTimeout(() => {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/dashboard.html';
                 }, 1500);
             } else {
+                console.log('Login failed - success:', response.success, 'user:', response.user);
                 this.showMessage(response.message || 'Login failed. Please check your credentials.', 'error');
             }
 
         } catch (error) {
+            console.error('Login error:', error);
             this.showMessage(error.message || 'Login failed. Please check your credentials.', 'error');
         } finally {
             this.setLoading('login', false);
@@ -517,6 +521,16 @@ class AuthManager {
             // Store the file for later upload
             this.profileImageFile = file;
         }
+    }
+
+    // Convert file to base64 for demo purposes
+    convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
     }
 }
 

@@ -93,3 +93,4 @@ public class PurchaseItemResponse {
         this.priceAtPurchase = priceAtPurchase;
     }
 }
+

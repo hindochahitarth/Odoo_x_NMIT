@@ -143,6 +143,38 @@ public class AuthService {
     }
     
     /**
+     * Get user by ID
+     * @param userId the user ID
+     * @return AuthResponse with user info
+     */
+    public AuthResponse getUserById(Long userId) {
+        try {
+            Optional<User> userOptional = userRepository.findById(userId);
+            
+            if (userOptional.isEmpty()) {
+                return AuthResponse.error("User not found");
+            }
+            
+            User user = userOptional.get();
+            
+            // Create user info for response
+            AuthResponse.UserInfo userInfo = new AuthResponse.UserInfo(
+                user.getId(),
+                user.getDisplayName(),
+                user.getEmail(),
+                user.getProfileImageUrl()
+            );
+            
+            return AuthResponse.success("User retrieved successfully", null, userInfo);
+            
+        } catch (Exception e) {
+            System.err.println("Get user error: " + e.getMessage());
+            e.printStackTrace();
+            return AuthResponse.error("Failed to retrieve user: " + e.getMessage());
+        }
+    }
+    
+    /**
      * Validate password strength
      * @param password the password to validate
      * @return true if valid, false otherwise

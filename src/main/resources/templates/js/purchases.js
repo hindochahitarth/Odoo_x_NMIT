@@ -14,6 +14,7 @@ class PurchasesManager {
         this.checkAuth();
         this.bindEvents();
         this.loadPurchases();
+        this.updateCartDisplay();
     }
 
     // Check if user is authenticated
@@ -173,36 +174,53 @@ class PurchasesManager {
     }
 
     // Reorder item (add to cart)
-    reorderItem(itemId) {
+    async reorderItem(itemId) {
         const purchase = this.purchases.find(p => p.items.some(item => item.id == itemId));
         if (!purchase) return;
 
         const item = purchase.items.find(item => item.id == itemId);
         if (!item) return;
 
-        // Add to cart
-        const cart = sharedUtils.getItem('cart', []);
-        const existingItem = cart.find(cartItem => cartItem.id === item.id);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                id: item.id,
-                title: item.title,
-                price: item.price,
-                category: item.category,
-                imageUrl: item.imageUrl,
-                quantity: 1
-            });
+        // Check if user is authenticated
+        if (!sharedUtils.isAuthenticated()) {
+            sharedUtils.showMessage('Please login to add items to cart', 'warning');
+            return;
         }
 
-        sharedUtils.setItem('cart', cart);
-        sharedUtils.showMessage('Item added to cart!', 'success');
-        
-        // Update cart count in header
-        const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-        document.getElementById('cartCount').textContent = cartCount;
+        try {
+            const response = await sharedUtils.makeApiCall(
+                `/api/cart/add?userId=${this.userId}&productId=${item.id}&quantity=1`,
+                null,
+                'POST'
+            );
+            
+            if (response.success) {
+                sharedUtils.showMessage('Item added to cart!', 'success');
+                this.updateCartDisplay();
+            } else {
+                sharedUtils.showMessage('Failed to add item to cart', 'error');
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            sharedUtils.showMessage('Failed to add item to cart', 'error');
+        }
+    }
+
+    // Update cart display
+    async updateCartDisplay() {
+        if (sharedUtils.isAuthenticated()) {
+            try {
+                const response = await sharedUtils.makeApiCall(`/api/cart/count/${this.userId}`);
+                if (response.success) {
+                    const cartCount = response.count;
+                    document.getElementById('cartCount').textContent = cartCount;
+                }
+            } catch (error) {
+                console.error('Error updating cart count:', error);
+            }
+        } else {
+            document.getElementById('cartCount').textContent = '0';
+        }
     }
 
     // Utility methods

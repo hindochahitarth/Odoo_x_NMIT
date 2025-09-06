@@ -83,29 +83,36 @@ class CartManager {
 
     // Create cart item HTML
     createCartItemHTML(item) {
-        const imageHtml = item.imageUrl ? 
-            `<img src="${item.imageUrl}" alt="${item.title}" class="item-image">` :
+        // Map backend field names to frontend expected names
+        const title = item.productTitle || item.title || 'Unknown Product';
+        const price = item.productPrice || item.price || 0;
+        const imageUrl = item.productImageUrl || item.imageUrl;
+        const category = item.productCategory || item.category || 'General';
+        const productId = item.productId || item.id;
+
+        const imageHtml = imageUrl ? 
+            `<img src="${imageUrl}" alt="${title}" class="item-image">` :
             `<div class="item-image"><i class="fas fa-image"></i></div>`;
 
         return `
-            <div class="cart-item" data-product-id="${item.id}">
+            <div class="cart-item" data-product-id="${productId}" data-cart-item-id="${item.id}">
                 ${imageHtml}
                 <div class="item-details">
-                    <h3 class="item-title">${this.escapeHtml(item.title)}</h3>
-                    <div class="item-category">${this.escapeHtml(item.category || 'General')}</div>
-                    <div class="item-price">${sharedUtils.formatPrice(item.price)}</div>
+                    <h3 class="item-title">${this.escapeHtml(title)}</h3>
+                    <div class="item-category">${this.escapeHtml(category)}</div>
+                    <div class="item-price">${sharedUtils.formatPrice(price)}</div>
                 </div>
                 <div class="item-controls">
                     <div class="quantity-controls">
-                        <button class="quantity-btn" data-action="decrease" data-product-id="${item.id}">
+                        <button class="quantity-btn" data-action="decrease" data-cart-item-id="${item.id}">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-product-id="${item.id}">
-                        <button class="quantity-btn" data-action="increase" data-product-id="${item.id}">
+                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-cart-item-id="${item.id}">
+                        <button class="quantity-btn" data-action="increase" data-cart-item-id="${item.id}">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <button class="remove-btn" data-action="remove" data-product-id="${item.id}">
+                    <button class="remove-btn" data-action="remove" data-cart-item-id="${item.id}">
                         <i class="fas fa-trash"></i>
                         Remove
                     </button>
@@ -119,32 +126,32 @@ class CartManager {
         // Quantity buttons
         document.querySelectorAll('[data-action="decrease"]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const productId = e.target.closest('[data-product-id]').dataset.productId;
-                this.updateQuantity(productId, -1);
+                const cartItemId = e.target.closest('[data-cart-item-id]').dataset.cartItemId;
+                this.updateQuantity(cartItemId, -1);
             });
         });
 
         document.querySelectorAll('[data-action="increase"]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const productId = e.target.closest('[data-product-id]').dataset.productId;
-                this.updateQuantity(productId, 1);
+                const cartItemId = e.target.closest('[data-cart-item-id]').dataset.cartItemId;
+                this.updateQuantity(cartItemId, 1);
             });
         });
 
         // Quantity input
         document.querySelectorAll('.quantity-input').forEach(input => {
             input.addEventListener('change', (e) => {
-                const productId = e.target.dataset.productId;
+                const cartItemId = e.target.dataset.cartItemId;
                 const newQuantity = parseInt(e.target.value);
-                this.setQuantity(productId, newQuantity);
+                this.setQuantity(cartItemId, newQuantity);
             });
         });
 
         // Remove buttons
         document.querySelectorAll('[data-action="remove"]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const productId = e.target.closest('[data-product-id]').dataset.productId;
-                this.removeItem(productId);
+                const cartItemId = e.target.closest('[data-cart-item-id]').dataset.cartItemId;
+                this.removeItem(cartItemId);
             });
         });
     }
@@ -235,7 +242,10 @@ class CartManager {
     // Update cart summary
     updateSummary() {
         const itemCount = this.cart.reduce((total, item) => total + item.quantity, 0);
-        const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const subtotal = this.cart.reduce((total, item) => {
+            const price = item.productPrice || item.price || 0;
+            return total + (parseFloat(price) * item.quantity);
+        }, 0);
 
         document.getElementById('itemCount').textContent = itemCount;
         document.getElementById('subtotal').textContent = sharedUtils.formatPrice(subtotal);
@@ -272,25 +282,29 @@ class CartManager {
     }
 
     // Add item to cart (called from other pages)
-    addToCart(product) {
-        const existingItem = this.cart.find(item => item.id === product.id);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            this.cart.push({
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                category: product.category,
-                imageUrl: product.imageUrl,
-                quantity: 1
-            });
+    async addToCart(product) {
+        if (!this.userId) {
+            sharedUtils.showMessage('Please login to add items to cart', 'warning');
+            return;
         }
 
-        this.saveCart();
-        this.renderCart();
-        sharedUtils.showMessage('Product added to cart!', 'success');
+        try {
+            const response = await sharedUtils.makeApiCall(
+                `/api/cart/add?userId=${this.userId}&productId=${product.id}&quantity=1`,
+                null,
+                'POST'
+            );
+            
+            if (response.success) {
+                await this.loadCartFromDatabase();
+                sharedUtils.showMessage('Product added to cart!', 'success');
+            } else {
+                sharedUtils.showMessage('Failed to add item to cart', 'error');
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            sharedUtils.showMessage('Failed to add item to cart', 'error');
+        }
     }
 
     // Utility methods

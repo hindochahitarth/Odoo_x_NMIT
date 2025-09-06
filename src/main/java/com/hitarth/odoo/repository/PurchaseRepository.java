@@ -19,3 +19,4 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     @Query("SELECT p FROM Purchase p LEFT JOIN FETCH p.items WHERE p.user = :user ORDER BY p.purchaseDate DESC")
     List<Purchase> findByUserWithItems(@Param("user") User user);
 }
+

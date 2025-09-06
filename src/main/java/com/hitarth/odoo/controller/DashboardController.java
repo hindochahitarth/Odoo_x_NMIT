@@ -48,16 +48,29 @@ public class DashboardController {
     @PutMapping("/profile")
     public ResponseEntity<AuthResponse> updateProfile(@RequestBody Map<String, Object> profileData) {
         try {
+            System.out.println("Received profile update request: " + profileData);
+            
             Long userId = Long.parseLong(profileData.get("userId").toString());
             String displayName = (String) profileData.get("displayName");
             String email = (String) profileData.get("email");
             String profileImageUrl = (String) profileData.get("profileImageUrl");
+            
+            System.out.println("Parsed data - userId: " + userId + ", displayName: " + displayName + ", email: " + email);
+            System.out.println("ProfileImageUrl length: " + (profileImageUrl != null ? profileImageUrl.length() : "null"));
+            
+            // Check if profileImageUrl is too long
+            if (profileImageUrl != null && profileImageUrl.length() > 10000) {
+                System.out.println("Profile image URL too long: " + profileImageUrl.length() + " characters");
+                AuthResponse errorResponse = AuthResponse.error("Profile image is too large. Please use a smaller image.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
             
             AuthResponse response = dashboardService.updateUserProfile(userId, displayName, email, profileImageUrl);
             
             if (response.isSuccess()) {
                 return ResponseEntity.ok(response);
             } else {
+                System.out.println("Dashboard service returned error: " + response.getMessage());
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
             
@@ -78,3 +91,4 @@ public class DashboardController {
         return ResponseEntity.ok("Dashboard service is running");
     }
 }
+

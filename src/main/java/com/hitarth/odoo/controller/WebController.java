@@ -16,6 +16,15 @@ public class WebController {
     }
     
     /**
+     * Serve the home page
+     * GET /index
+     */
+    @GetMapping("/index")
+    public String indexRoot() {
+        return "forward:/html/index.html";
+    }
+    
+    /**
      * Serve the index page
      * GET /index.html
      */
@@ -66,6 +75,15 @@ public class WebController {
      */
     @GetMapping("/dashboard")
     public String dashboard() {
+        return "forward:/html/dashboard.html";
+    }
+    
+    /**
+     * Serve the dashboard page
+     * GET /dashboard.html
+     */
+    @GetMapping("/dashboard.html")
+    public String dashboardHtml() {
         return "forward:/html/dashboard.html";
     }
     
