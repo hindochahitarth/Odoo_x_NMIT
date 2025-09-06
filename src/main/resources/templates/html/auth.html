@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Marketplace</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- App Logo -->
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="#4CAF50"/>
+                    <path d="M12 6L12.5 8.5L15 9L12.5 9.5L12 12L11.5 9.5L9 9L11.5 8.5L12 6Z" fill="#8BC34A"/>
+                </svg>
+            </div>
+            <h1 class="app-title">EcoFinds</h1>
+            <p class="app-subtitle">Sustainable Second-Hand Marketplace</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-container" id="loginForm">
+            <h2 class="form-title">Welcome Back</h2>
+            <form class="auth-form" id="loginFormElement">
+                <div class="input-group">
+                    <label for="loginEmail" class="input-label">Email / Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input 
+                            type="text" 
+                            id="loginEmail" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="Enter your email or username"
+                            aria-label="Email or username"
+                            required
+                        >
+                    </div>
+                    <span class="error-message" id="loginEmailError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword" class="input-label">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            aria-label="Password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="loginPasswordToggle" aria-label="Show password">
+                            👁
+                        </button>
+                    </div>
+                    <span class="error-message" id="loginPasswordError"></span>
+                </div>
+
+                <button type="submit" class="auth-button" id="loginButton">
+                    <span class="button-text">Login</span>
+                    <div class="loading-spinner" id="loginSpinner"></div>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p class="forgot-password">
+                    <button type="button" class="forgot-link" id="forgotPassword">Forgot Password?</button>
+                </p>
+                <p class="switch-text">Don't have an account? 
+                    <button type="button" class="switch-link" id="showSignup">Sign up</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div class="form-container hidden" id="signupForm">
+            <h2 class="form-title">Join EcoFinds</h2>
+            <form class="auth-form" id="signupFormElement">
+                <div class="input-group">
+                    <label for="signupDisplayName" class="input-label">Display Name</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input 
+                            type="text" 
+                            id="signupDisplayName" 
+                            name="displayName" 
+                            class="form-input" 
+                            placeholder="Enter your display name"
+                            aria-label="Display name"
+                            required
+                        >
+                    </div>
+                    <span class="error-message" id="signupDisplayNameError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="signupProfileImage" class="input-label">Profile Image (Optional)</label>
+                    <div class="image-upload-wrapper">
+                        <div class="image-preview" id="imagePreview">
+                            <span class="image-placeholder">📷</span>
+                            <span class="image-text">Click to upload image</span>
+                        </div>
+                        <input 
+                            type="file" 
+                            id="signupProfileImage" 
+                            name="profileImage" 
+                            class="image-input" 
+                            accept="image/*"
+                            aria-label="Profile image"
+                        >
+                    </div>
+                    <span class="error-message" id="signupProfileImageError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="signupEmail" class="input-label">Email</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input 
+                            type="email" 
+                            id="signupEmail" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="Enter your email"
+                            aria-label="Email"
+                            required
+                        >
+                    </div>
+                    <span class="error-message" id="signupEmailError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="signupPassword" class="input-label">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input 
+                            type="password" 
+                            id="signupPassword" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            aria-label="Password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="signupPasswordToggle" aria-label="Show password">
+                            👁
+                        </button>
+                    </div>
+                    <div class="password-requirements">
+                        <small>Password must contain:</small>
+                        <ul>
+                            <li id="req-length">At least 8 characters</li>
+                            <li id="req-uppercase">One uppercase letter (A-Z)</li>
+                            <li id="req-lowercase">One lowercase letter (a-z)</li>
+                            <li id="req-number">One number (0-9)</li>
+                            <li id="req-special">One special character (!@#$%^&*)</li>
+                        </ul>
+                    </div>
+                    <span class="error-message" id="signupPasswordError"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="signupConfirmPassword" class="input-label">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input 
+                            type="password" 
+                            id="signupConfirmPassword" 
+                            name="confirmPassword" 
+                            class="form-input" 
+                            placeholder="Confirm your password"
+                            aria-label="Confirm password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="signupConfirmPasswordToggle" aria-label="Show password">
+                            👁
+                        </button>
+                    </div>
+                    <span class="error-message" id="signupConfirmPasswordError"></span>
+                </div>
+
+                <button type="submit" class="auth-button" id="signupButton">
+                    <span class="button-text">Sign Up</span>
+                    <div class="loading-spinner" id="signupSpinner"></div>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p class="switch-text">Already have an account? 
+                    <button type="button" class="switch-link" id="showLogin">Login</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="message-container" id="messageContainer"></div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>
